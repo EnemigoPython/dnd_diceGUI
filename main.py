@@ -8,11 +8,15 @@ class App(Frame):
         self.radio = Frame(self)
         self.slide = Frame(self)
         self.mod_layer = Frame(self)
+        self.text_options = Frame(self)
         self.text_layer = Frame(self)
         self.v = IntVar()
+        self.mod_vals = IntVar()
         self.die_label = Label(self.radio, text='Pick a die value:')
         self.num_label = Label(self.slide, text='Number of dice to roll:')
         self.mod_label = Label(self.mod_layer, text='Roll modifier:')
+        self.toggle_label = Label(self.text_options, text='Show modifiers')
+        self.mod_vals_check = Checkbutton(self.text_options, variable=self.mod_vals)
         self.mod = Entry(self.mod_layer, width=6)
         self.long_text = Text(self.text_layer, width=40, height=4, state='disabled')
         self.radio_buttons = []
@@ -27,12 +31,15 @@ class App(Frame):
     def compile(self):
         self.pack(padx=10, pady=10)
         self.radio.pack(side='top')
-        self.text_layer.pack(side='bottom', pady=15)
+        self.text_layer.pack(side='bottom')
+        self.text_options.pack(side='bottom', anchor='w', pady=10)
         self.slide.pack(side='left')
         self.die_label.pack(anchor='w')
         self.num_label.pack()
         self.mod_label.pack(side='left')
         self.mod_layer.pack(pady=15)
+        self.toggle_label.pack(side='left', ipadx=10)
+        self.mod_vals_check.pack(side='left')
         self.long_text.pack()
         self.mod.pack(side='left', padx=15)
         self.button.pack(side='left', padx=20)
@@ -49,8 +56,12 @@ class App(Frame):
         if self.mod.get().isnumeric() or (self.mod.get()[1:].isnumeric() and self.mod.get()[0] in ('-', '+')):
             num_mod = int(self.mod.get())
         for roll in range(self.scale.get()):
-            vals.append(random.randint(1, self.dice[self.v.get()]))
-            total += vals[-1]
+            roll_val = random.randint(1, self.dice[self.v.get()])
+            if self.mod_vals.get() and num_mod != 0:
+                vals.append(f'{roll_val}({roll_val + num_mod})')
+            else:
+                vals.append(roll_val)
+            total += roll_val
         if num_mod != 0:
             self.result['text'] = f'{total} {"+" if num_mod > 0 else "-"} {abs(num_mod)} = {total + num_mod}'
         else:
