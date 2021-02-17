@@ -17,6 +17,7 @@ class App(Frame):
         self.mod_label = Label(self.mod_layer, text='Roll modifier:')
         self.toggle_label = Label(self.text_options, text='Show modifiers')
         self.mod_vals_check = Checkbutton(self.text_options, variable=self.mod_vals)
+        self.clear = Button(self.text_options, text='Clear', padx=20, command=self.clear)
         self.mod = Entry(self.mod_layer, width=6)
         self.long_text = Text(self.text_layer, width=40, height=4, state='disabled')
         self.radio_buttons = []
@@ -40,6 +41,7 @@ class App(Frame):
         self.mod_layer.pack(pady=15)
         self.toggle_label.pack(side='left', ipadx=10)
         self.mod_vals_check.pack(side='left')
+        self.clear.pack(side='right', padx=10)
         self.long_text.pack()
         self.mod.pack(side='left', padx=15)
         self.button.pack(side='left', padx=20)
@@ -68,6 +70,11 @@ class App(Frame):
             self.result['text'] = f'{total}'
         self.long_text.configure(state='normal')
         self.long_text.insert('end', f'/{" ".join([str(i) for i in vals])}')
+        self.long_text.configure(state='disabled')
+
+    def clear(self):
+        self.long_text.configure(state='normal')
+        self.long_text.delete('1.0', END)
         self.long_text.configure(state='disabled')
 
 
