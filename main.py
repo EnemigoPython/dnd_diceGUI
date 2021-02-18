@@ -9,7 +9,7 @@ class App(Frame):
         self.slide = Frame(self)
         self.mod_layer = Frame(self)
         self.text_options = Frame(self)
-        self.text_layer = Frame(self)
+        self.text_layer = Frame(self, bg='cyan')
         self.v = IntVar()
         self.mod_vals = IntVar()
         self.die_label = Label(self.radio, text='Pick a die value:')
@@ -80,5 +80,6 @@ class App(Frame):
 
 root = Tk()
 root.title('DND dice')
+root.iconbitmap('dice.ico')
 app = App(root)
 mainloop()
